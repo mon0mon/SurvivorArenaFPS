@@ -1,3 +1,4 @@
+class_name PlayerController
 extends CharacterBody3D
 
 @export_category("Player Properties")
@@ -6,17 +7,6 @@ extends CharacterBody3D
 
 func _ready() -> void:
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-    if event is InputEventMouseMotion:
-        # Godot에서는 right hand rule을 사용하기 때문에
-        # 반시계 방향이 양의 방향으로 지정되어있음
-        rotation_degrees.y -= event.relative.x * 0.125
-        %Camera3D.rotation_degrees.x -= event.relative.y * 0.125
-        %Camera3D.rotation_degrees.x = clamp(%Camera3D.rotation_degrees.x, -80.0, 80.0)
-    elif event.is_action_pressed("ui_cancel"):
-        Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _physics_process(delta: float) -> void:

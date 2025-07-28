@@ -1,31 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://cn678dvs1mdlo"]
+[gd_scene load_steps=8 format=3 uid="uid://cn678dvs1mdlo"]
 
 [ext_resource type="PackedScene" uid="uid://rm6ya2ko1hwq" path="res://player/simple_gun/gun_model.glb" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://cgsvbg7oviymj" path="res://player/player.gd" id="1_rkbax"]
+[ext_resource type="Script" uid="uid://bhawngix08hvw" path="res://player/camera_controller.gd" id="2_qjkh3"]
 [ext_resource type="Texture2D" uid="uid://b22i34ivq5bi1" path="res://player/reticle.png" id="3_g1dw6"]
 [ext_resource type="AudioStream" uid="uid://s1g0jve3d445" path="res://player/gun_shoot.wav" id="4_yw30f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kqu6x"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qjkh3"]
+
 [node name="Player" type="CharacterBody3D"]
-collision_mask = 3
 script = ExtResource("1_rkbax")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_kqu6x")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_qjkh3")
 
-[node name="gun_model" parent="Camera3D" instance=ExtResource("1_oul6g")]
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+top_level = true
+script = ExtResource("2_qjkh3")
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+unique_name_in_owner = true
+
+[node name="gun_model" parent="CameraController/Camera3D" instance=ExtResource("1_oul6g")]
 unique_name_in_owner = true
 transform = Transform3D(-0.532964, 0.0064894, -0.0461745, 0, 0.529793, 0.0744576, 0.0466283, 0.0741743, -0.527777, 0.575, -0.385, -0.9)
 
-[node name="Marker3D" type="Marker3D" parent="Camera3D"]
+[node name="Marker3D" type="Marker3D" parent="CameraController/Camera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.554279, -0.325513, -1.19704)
+
+[node name="CameraControllerAnchor" type="Marker3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
 [node name="Reticle" type="TextureRect" parent="."]
 anchors_preset = 8
